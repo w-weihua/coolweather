@@ -18,6 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.wwh.coolweather.app.R;
+import com.example.wwh.coolweather.app.service.AutoUpdateService;
 import com.example.wwh.coolweather.app.util.HttpCallbackListener;
 import com.example.wwh.coolweather.app.util.HttpUtil;
 import com.example.wwh.coolweather.app.util.Utility;
@@ -171,11 +172,15 @@ public class WeatherActivity extends Activity implements View.OnClickListener{
         temp1Text.setText(prefs.getString("temp1", ""));
         temp2Text.setText(prefs.getString("temp2", ""));
         weatherDespText.setText(prefs.getString("weather_desp", ""));
-        //怀疑是这个语句问题
         publicText.setText("今天" + prefs.getString("publish_time", "") + "发布");
         currentDateText.setText(prefs.getString("current_date", ""));
         weatherInfoLayout.setVisibility(View.VISIBLE);
         cityNameText.setVisibility(View.VISIBLE);
+        //激活AutoUpdateService
+        //只要选择了某个城市病成功更新天气之后，AutoUpdateService就会一直运行
+        //并保证每8小时更新一次天气
+        Intent intent = new Intent(this, AutoUpdateService.class);
+        startService(intent);
     }
 
 }
